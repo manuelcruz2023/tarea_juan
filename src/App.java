@@ -1,4 +1,6 @@
+import java.text.Normalizer;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class App {
     public int sumaNumerosPares (int number) {
@@ -57,15 +59,17 @@ public class App {
         }
         return result;
     } 
-
+    public String deAccent(String str) {
+      String nfdNormalizedString = Normalizer.normalize(str,  Normalizer.Form.NFD); 
+      Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+      return pattern.matcher(nfdNormalizedString).replaceAll("");
+    }
     public int contarVocales (String cadena) {
         String cadenalow = cadena.toLowerCase();
-        char[] vocales = {'a', 'e', 'i', 'o', 'u'};
-        char[] abecedario = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
-                             'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '};
+        char[] vocales = {'a', 'e', 'i', 'o', 'u', 'á', 'é', 'í', 'ó', 'ú'};
         int contVocales = 0;
         for (int i = 0; i < cadena.length(); i++) {
-            String temp = cadenalow.substring(i, i+1);
+            String temp = deAccent(cadenalow.substring(i, i+1));
             for (int j = 0; j < vocales.length; j++) {
                 if (temp.equals(vocales[j]+"")) {
                     contVocales++;
@@ -74,13 +78,74 @@ public class App {
         }
         return contVocales;
     }
+
+    public void adivinarNumero () {
+        Scanner lectura = new Scanner(System.in);
+        int random = (int)(Math.random()*10+1);
+        System.out.println("---------Bienvendio al juego de adivinar numeros---------");
+        System.out.println("---------El numero secreto esta entre 1 y 10---------");
+        System.out.println("---------Tienes 7 oportunidades, si se te acaban perderas---------");
+        int jugar = 0;
+        int contPistas = 7;
+        while (jugar==0) {
+            int condicion = 0;
+            while (condicion!=random) {
+                condicion = (int)(Math.random()*10+1);
+            }
+            System.out.println("tu numero menos el infinito despierto es = " + (condicion-8));
+            System.out.println("Ingresa el numero");
+            int rta = lectura.nextInt();
+            if (rta==random) {
+                System.out.println("Felicidades, ganaste");
+                jugar++;
+            }else{
+                contPistas--;
+                System.out.println("te quedan " + contPistas + " oportunidades");
+            }
+            if (contPistas==0) {
+                System.out.println("Perdiste");
+                jugar++;
+            }
+        }
+    }
+
+    public void masaCorporal (int peso, int estatura) {
+        int imc = peso/(estatura*estatura);
+        System.out.println("su IMC es = " + imc);
+        if (imc<18.5) {
+            System.out.println("Bajo peso");
+        }
+        if (18.5<=imc && imc<25) {
+            System.out.println("peso normal");
+        }
+        if (25<=imc && imc <30) {
+            System.out.println("sobrepeso");
+        }
+        if (imc<=30) {
+            System.out.println("obesidad");
+        }
+    }
+
+    public int calcularDescuento (int precio) {
+        int precioFinal = precio;
+        if (precio>50000 && precio<70000) {
+            precioFinal = precio - ((precio*20)/100);
+        }
+        if (precio>70000&& precio<200000) {
+            precioFinal = precio - ((precio*30)/100);
+        }
+        if (precio>200000) {
+            precioFinal = precio - ((precio*50)/100);
+        }
+        return precioFinal;
+    }
     public static void main(String[] args) throws Exception {
         Scanner lScanner = new Scanner(System.in);
 
         App app = new App();
 
-        int op = 1;
-        while (op!=0) {
+        int jugar = 1;
+        while (jugar!=0) {
             System.out.println("----------Menú principal----------");
             System.out.println("----------Marque 1 para sumar pares----------");
             System.out.println("----------Marque 2 para mostrar la tabla de multiplicar----------");
@@ -89,12 +154,14 @@ public class App {
             System.out.println("----------Marque 5 para invertir numero----------");
             System.out.println("----------Marque 6 para calcular potencia de un numero----------");
             System.out.println("----------Marque 7 para contar vocales----------");
-            System.out.println("----------Marque 8 para sumar pares----------");
-            System.out.println("----------Marque 9 para sumar pares----------");
-            System.out.println("----------Marque 10 para sumar pares----------");
+            System.out.println("----------Marque 8 para adivinar un numero----------");
+            System.out.println("----------Marque 9 para calcular IMC----------");
+            System.out.println("----------Marque 10 para aplicar descuento----------");
             System.out.println("----------Marque 0 para salir---------");
-            op = lScanner.nextInt();
+            int op = lScanner.nextInt();
             switch (op) {
+                case 0: 
+                break;
                 case 1:
                 System.out.println("Ingrese su numero limite");
                 int number = lScanner.nextInt();
@@ -132,7 +199,22 @@ public class App {
                 case 7:
                 System.out.println("Ingrese la cadena");
                 String cadena = lScanner.next();
-                System.out.println("La palabra " + cadena + " contiene " + app.contarVocales(cadena) + " vocales");
+                System.out.println("La palabra " + " contiene " + app.contarVocales(cadena) + " vocales");
+
+                case 8:
+                app.adivinarNumero();
+
+                case 9:
+                System.out.println("ingrese su peso en kg");
+                int peso = lScanner.nextInt();
+                System.out.println("ingrese su altura en metros");
+                int altura = lScanner.nextInt();
+                app.masaCorporal(peso, altura);
+
+                case 10: 
+                System.out.println("ingrese el precio de su producto");
+                int precio = lScanner.nextInt();
+                System.out.println(app.calcularDescuento(precio));
                 default:
                     break;
             }
