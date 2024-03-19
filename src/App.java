@@ -109,8 +109,8 @@ public class App {
         }
     }
 
-    public void masaCorporal (int peso, int estatura) {
-        int imc = peso/(estatura*estatura);
+    public void masaCorporal (double peso, double estatura) {
+        double imc = peso/(estatura*estatura);
         System.out.println("su IMC es = " + imc);
         if (imc<18.5) {
             System.out.println("Bajo peso");
@@ -121,7 +121,7 @@ public class App {
         if (25<=imc && imc <30) {
             System.out.println("sobrepeso");
         }
-        if (imc<=30) {
+        if (imc>=30) {
             System.out.println("obesidad");
         }
     }
@@ -166,55 +166,56 @@ public class App {
                 System.out.println("Ingrese su numero limite");
                 int number = lScanner.nextInt();
                 System.out.println(app.sumaNumerosPares(number));
-
+                break;
                 case 2:
                 System.out.println("Ingrese numero a mostrar tabla");
                 int multiplo = lScanner.nextInt();
                 System.out.println("Ingrese numero limite");
                 int limit = lScanner.nextInt();
                 app.tablaMultiplicar(multiplo, limit);
-
+                break;
                 case 3:
                 System.out.println("Ingrese numero a calcular factorial");
                 int numFactorial = lScanner.nextInt();
                 System.out.println(app.calcularFactorial(numFactorial));
-
+                break;
                 case 4:
                 System.out.println("Ingrese numero a verificar");
                 int verificarPrimo = lScanner.nextInt();
                 app.esPrimo(verificarPrimo);
-            
+                break;
                 case 5:
                 System.out.println("Ingrese numero a invertir");
                 int numeroInvertir = lScanner.nextInt();
                 System.out.println(app.invertirNumero(numeroInvertir));
-
+                break;
                 case 6:
                 System.out.println("Ingrese un numero ");
                 int numeroBase = lScanner.nextInt();
                 System.out.print("Elevado a : ");
                 int potencia = lScanner.nextInt();
                 System.out.println(app.calcularPotencia(numeroBase, potencia));
-
+                break;
                 case 7:
                 System.out.println("Ingrese la cadena");
                 String cadena = lScanner.next();
                 System.out.println("La palabra " + " contiene " + app.contarVocales(cadena) + " vocales");
-
+                break;
                 case 8:
                 app.adivinarNumero();
-
+                break;
                 case 9:
                 System.out.println("ingrese su peso en kg");
-                int peso = lScanner.nextInt();
+                double peso = lScanner.nextDouble();
                 System.out.println("ingrese su altura en metros");
-                int altura = lScanner.nextInt();
+                double altura = lScanner.nextDouble();
                 app.masaCorporal(peso, altura);
-
+                break;
                 case 10: 
                 System.out.println("ingrese el precio de su producto");
                 int precio = lScanner.nextInt();
                 System.out.println(app.calcularDescuento(precio));
+                break;
                 default:
                     break;
             }
